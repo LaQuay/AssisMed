@@ -20,12 +20,13 @@ import dev.mese.starthack.a2017.assismed.controllers.SparkController;
 public class HomeFragment
         extends Fragment
         implements SparkController.PhoneRegisteredCallback, SparkController.PhoneDoingCallCallback,
-            SparkController.VideoCodeActivationCallback
-{
+        SparkController.VideoCodeActivationCallback {
     public static final String TAG = HomeFragment.class.getSimpleName();
 
     private static final String[] callArray = {"ester.lorente@est.fib.upc.edu", "dx80_lauzhack@ch.room.ciscospark.com"};
     private static final int callIndex = 0;
+    private static final String[] postArray = {"ester.lorente@est.fib.upc.edu"};
+    private static final int postIndex = 0;
     private View rootview;
     private WebView webView;
     private VideoView localView;
@@ -110,12 +111,16 @@ public class HomeFragment
     public void onPhoneRegistered(final boolean isSuccessful) {
         Log.e(TAG, "Registration result: " + isSuccessful);
 
-        SparkController.getInstance().requestVideoCodecActivation(getContext(), videoCodeActivationCallback);
+        //SparkController.getInstance().requestVideoCodecActivation(getContext(), videoCodeActivationCallback);
+        //SparkController.getInstance().postMessage(postArray[postIndex], "OLA K ASE");
+        //SparkController.getInstance().postMessage(postArray[postIndex], "medicalevent");
+        //SparkController.getInstance().postMessage(postArray[postIndex], "new radiografia for ester.loga@gmail.com on 13/11/2017 at 1:32");
+        SparkController.getInstance().listMessages(SparkController.ROOM_HEALTH_ASSIST_ROBOT);
     }
 
     @Override
     public void onVideoCodecResponse(boolean isSuccessful) {
-        Log.e(TAG, "onVideoCodecResponsec call: " + isSuccessful);
+        Log.e(TAG, "onVideoCodecResponse call: " + isSuccessful);
 
         if (isSuccessful) {
             // Set up Listener to receive a call

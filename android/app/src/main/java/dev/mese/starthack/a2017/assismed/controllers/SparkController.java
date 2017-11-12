@@ -12,10 +12,13 @@ import com.ciscospark.androidsdk.Spark;
 import com.ciscospark.androidsdk.SparkError;
 import com.ciscospark.androidsdk.auth.Authenticator;
 import com.ciscospark.androidsdk.auth.OAuthWebViewAuthenticator;
+import com.ciscospark.androidsdk.message.Message;
 import com.ciscospark.androidsdk.phone.Call;
 import com.ciscospark.androidsdk.phone.CallObserver;
 import com.ciscospark.androidsdk.phone.MediaOption;
 import com.ciscospark.androidsdk.phone.Phone;
+
+import java.util.List;
 
 public class SparkController {
     public static final String TAG = SparkController.class.getSimpleName();
@@ -24,6 +27,8 @@ public class SparkController {
     private final static String clientSecret = "bbbc79b98186e5be3ccb67f7b5b06a830a90eb48bb29df6684d933e6523e6047";
     private final static String scope = "spark:all";
     private final static String redirectUri = "assismedapp://responsecallback";
+
+    public final static String ROOM_HEALTH_ASSIST_ROBOT = "f1836441-08bb-3cda-9daa-2e33cb061b89";
 
     private Spark sparkInstance;
 
@@ -156,6 +161,44 @@ public class SparkController {
                     Log.e(TAG, "requestVideoCodecActivation: " + result.getData());
 
                     videoCodeActivationCallback.onVideoCodecResponse(result.getData());
+                }
+            });
+        }
+    }
+
+    public void postMessage(String toPersonEmail, String messageToSend) {
+        if (sparkInstance != null) {
+            sparkInstance.messages().post(null, null, toPersonEmail, messageToSend, null, null, new CompletionHandler<Message>() {
+                @Override
+                public void onComplete(Result<Message> result) {
+                    if (result.isSuccessful()) {
+                        Message message = result.getData();
+                        Log.e(TAG, "onResultSuccessful: " + message);
+                    } else {
+                        SparkError error = result.getError();
+                        Log.e(TAG, "onResultError: " + error);
+                    }
+                }
+            });
+        }
+    }
+
+    public void listMessages(String toRoomID) {
+        if (sparkInstance != null) {
+            sparkInstance.messages().list(toRoomID, null, null, null, 50, new CompletionHandler<List<Message>>() {
+                @Override
+                public void onComplete(Result<List<Message>> results) {
+                    if (results.isSuccessful()) {
+                        List<Message> messagesList = results.getData();
+                        if (messagesList != null) {
+                            for (int i = 0; i < messagesList.size(); ++i) {
+                                Log.e(TAG, "onResultSuccessful(" + i + "): " + messagesList.get(i));
+                            }
+                        }
+                    } else {
+                        SparkError error = results.getError();
+                        Log.e(TAG, "onResultError: " + error);
+                    }
                 }
             });
         }
