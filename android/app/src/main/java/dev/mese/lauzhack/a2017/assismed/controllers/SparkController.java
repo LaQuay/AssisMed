@@ -16,6 +16,7 @@ import com.ciscospark.androidsdk.phone.MediaOption;
 import com.ciscospark.androidsdk.phone.Phone;
 import com.webex.wseclient.WseSurfaceView;
 
+import java.util.Collections;
 import java.util.List;
 
 public class SparkController {
@@ -194,6 +195,7 @@ public class SparkController {
                     if (results.isSuccessful()) {
                         List<Message> messagesList = results.getData();
                         if (messagesList != null) {
+                            Collections.reverse(messagesList);
                             callback.onListMessagesResultReceived(messagesList);
                         }
                     } else {

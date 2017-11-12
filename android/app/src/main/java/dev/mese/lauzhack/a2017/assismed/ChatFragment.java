@@ -23,9 +23,9 @@ import dev.mese.lauzhack.a2017.assismed.utils.Utility;
 public class ChatFragment extends Fragment implements SparkController.ListMessagesResultCallback {
 
     public static final String TAG = ChatFragment.class.getSimpleName();
-    private static final String ROOM_ID_ARRAY[] = {"f1836441-08bb-3cda-9daa-2e33cb061b89"};
+    private static final String ROOM_ID_ARRAY[] = {"Y2lzY29zcGFyazovL3VzL1JPT00vMjJhNWFjZjUtNTM5OS0zNWQ4LWJmOTUtNTNmNDdjYTVjMDE1"};
     private static final int indexRoom = 0;
-    private static final String SENDER_EMAIL[] = {"maarcbcn@gmail.com"};
+    private static final String SENDER_EMAIL[] = {"ester.loga@gmail.com"};
     private static final int indexSender = 0;
     public static ArrayList<ChatMessage> chatlist;
     public static ChatAdapter chatAdapter;
