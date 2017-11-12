@@ -21,6 +21,14 @@ AssistMed has two different approaches.
 
 - A user-friendly android mobile application that integrates with Cisco Spark Chat by providing a chat and a videoconference between patient and his/her doctor.
 
+  - `Authentication`: Create a new Spark instance using Spark ID authentication (OAuth-based).
+  - `Register phone`: Register the device to send and receive calls.
+  - `Call`: Send calls (video enabled).
+  - `Hangup call`: Hangup a call.
+  - `Listener for receiving calls`: Set up a listener in order to receive a call (video enabled).
+  - `Post Message`: Post a Message to an specífic room or a person.
+  - `Read Messages`: Read all Messages of a room.
+
 ## How we built it
 
 We created a board using Cisco Spark to reproduce a hospital with professionals and patients. In it we created a bot named HealthAssistBot that will be the link between both type of people.
