@@ -23,6 +23,8 @@ import dev.mese.lauzhack.a2017.assismed.utils.Utility;
 public class ChatFragment extends Fragment implements SparkController.ListMessagesResultCallback {
 
     public static final String TAG = ChatFragment.class.getSimpleName();
+    private static final String ROOM_ID_ARRAY[] = {"f1836441-08bb-3cda-9daa-2e33cb061b89"};
+    private static final int index = 0;
     public static ArrayList<ChatMessage> chatlist;
     public static ChatAdapter chatAdapter;
     private View rootview;
@@ -86,8 +88,7 @@ public class ChatFragment extends Fragment implements SparkController.ListMessag
     }
 
     public void getTextMessages(View v) {
-        String roomID = "Y2lzY29zcGFyazovL3VzL1JPT00vMjJhNWFjZjUtNTM5OS0zNWQ4LWJmOTUtNTNmNDdjYTVjMDE1";
-        SparkController.getInstance().listMessages(roomID, listMessagesResultCallback);
+        SparkController.getInstance().listMessages(ROOM_ID_ARRAY[index], listMessagesResultCallback);
     }
 
     @Override
@@ -100,8 +101,8 @@ public class ChatFragment extends Fragment implements SparkController.ListMessag
                         message, "" + random.nextInt(1000), isMine);
                 chatMessage.setMsgID();
                 chatMessage.body = message;
-                chatMessage.Date = CommonxMethods.getCurrentDate();
-                chatMessage.Time = CommonMethods.getCurrentTime();
+                chatMessage.Date = Utility.getCurrentDate();
+                chatMessage.Time = Utility.getCurrentTime();
                 msg_edittext.setText("");
                 chatAdapter.add(chatMessage);
                 chatAdapter.notifyDataSetChanged();

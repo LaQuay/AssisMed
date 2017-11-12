@@ -3,7 +3,6 @@ package dev.mese.lauzhack.a2017.assismed;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,9 +18,9 @@ import dev.mese.lauzhack.a2017.assismed.models.ChatMessage;
 
 public class ChatAdapter extends BaseAdapter {
 
-    private Activity activity;
     private static LayoutInflater inflater = null;
     ArrayList<ChatMessage> chatMessageList;
+    private Activity activity;
 
     public ChatAdapter(Activity activity, ArrayList<ChatMessage> list) {
         this.activity = activity;
@@ -59,7 +58,7 @@ public class ChatAdapter extends BaseAdapter {
         msg.setText(message.body);
         msg.setTextSize(18);
 
-        msg.setPadding((int)(metrics.density*10+0.5f),(int)(metrics.density*7+0.5f),
+        msg.setPadding((int) (metrics.density * 20 + 0.5f), (int) (metrics.density * 7 + 0.5f),
                 (int)(metrics.density*20+0.5f), (int)(metrics.density*7+0.5f));
         
         LinearLayout layout = (LinearLayout) vi
