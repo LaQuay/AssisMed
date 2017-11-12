@@ -56,6 +56,8 @@ public class HomeFragment extends Fragment implements SparkController.PhoneRegis
         setUpListeners();
 
         phoneRegisteredCallback = this;
+        phoneDoingCallCallback = this;
+        onHangupCallCallback = this;
 
         currentFlowState = FlowState.LOGIN;
         changeFlowState(currentFlowState);
