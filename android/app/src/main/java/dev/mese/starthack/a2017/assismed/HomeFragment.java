@@ -1,5 +1,6 @@
 package dev.mese.starthack.a2017.assismed;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,26 +12,15 @@ import android.webkit.WebView;
 
 import com.ciscospark.androidsdk.CompletionHandler;
 import com.ciscospark.androidsdk.Result;
-import com.ciscospark.androidsdk.SparkError;
 import com.ciscospark.androidsdk.auth.OAuthWebViewAuthenticator;
-import com.webex.wseclient.WseSurfaceView;
 
 import dev.mese.starthack.a2017.assismed.controllers.SparkController;
 
-public class HomeFragment
-        extends Fragment
-        implements SparkController.PhoneRegisteredCallback, SparkController.PhoneDoingCallCallback,
-        SparkController.VideoCodeActivationCallback {
+public class HomeFragment extends Fragment implements SparkController.PhoneRegisteredCallback {
     public static final String TAG = HomeFragment.class.getSimpleName();
 
-    private static final String[] callArray = {"ester.lorente@est.fib.upc.edu", "dx80_lauzhack@ch.room.ciscospark.com"};
-    private static final int callIndex = 0;
-    private static final String[] postArray = {"ester.lorente@est.fib.upc.edu"};
-    private static final int postIndex = 0;
     private View rootview;
     private WebView webView;
-    private WseSurfaceView localView;
-    private WseSurfaceView remoteView;
     private SparkController.PhoneRegisteredCallback phoneRegisteredCallback;
     private SparkController.PhoneDoingCallCallback phoneDoingCallCallback;
     private SparkController.VideoCodeActivationCallback videoCodeActivationCallback;
@@ -48,8 +38,6 @@ public class HomeFragment
         setUpListeners();
 
         phoneRegisteredCallback = this;
-        phoneDoingCallCallback = this;
-        videoCodeActivationCallback = this;
 
         switchAuthMode(true);
         connectSparkOAuth();
@@ -60,12 +48,8 @@ public class HomeFragment
     private void switchAuthMode(boolean hideAuthMode) {
         if (hideAuthMode) {
             webView.setVisibility(View.GONE);
-            localView.setVisibility(View.VISIBLE);
-            remoteView.setVisibility(View.VISIBLE);
         } else {
             webView.setVisibility(View.VISIBLE);
-            localView.setVisibility(View.GONE);
-            remoteView.setVisibility(View.GONE);
         }
     }
 
@@ -95,8 +79,6 @@ public class HomeFragment
 
     private void setUpElements() {
         webView = (WebView) rootview.findViewById(R.id.webview);
-        localView = (WseSurfaceView) rootview.findViewById(R.id.fragment_home_local_view);
-        remoteView = (WseSurfaceView) rootview.findViewById(R.id.fragment_home_remote_view);
     }
 
     private void setUpListeners() {
@@ -107,32 +89,13 @@ public class HomeFragment
     public void onPhoneRegistered(final boolean isSuccessful) {
         Log.e(TAG, "Registration result: " + isSuccessful);
 
-        SparkController.getInstance().requestVideoCodecActivation(getContext(), videoCodeActivationCallback);
+        Intent intent = new Intent(getContext(), CallActivity.class);
+        startActivity(intent);
+
+        //SparkController.getInstance().requestVideoCodecActivation(getContext(), videoCodeActivationCallback);
         //SparkController.getInstance().postMessage(postArray[postIndex], "OLA K ASE");
         //SparkController.getInstance().postMessage(postArray[postIndex], "medicalevent");
         //SparkController.getInstance().postMessage(postArray[postIndex], "new radiografia for ester.loga@gmail.com on 13/11/2017 at 1:32");
         //SparkController.getInstance().listMessages(SparkController.ROOM_HEALTH_ASSIST_ROBOT);
-    }
-
-    @Override
-    public void onVideoCodecResponse(boolean isSuccessful) {
-        Log.e(TAG, "onVideoCodecResponse call: " + isSuccessful);
-
-        if (isSuccessful) {
-            // Set up Listener to receive a call
-            //SparkController.getInstance().setListenerReceiveCall(spark, localView, remoteView, phoneDoingCallCallback);
-
-            // Call someone
-            SparkController.getInstance().call(callArray[callIndex], localView, remoteView, phoneDoingCallCallback);
-        }
-    }
-
-    @Override
-    public void onDoingCall(boolean isSuccessful, SparkError error) {
-        Log.e(TAG, "Inside call: " + isSuccessful);
-
-        if (error != null) {
-            Log.e(TAG, "Inside call error: " + error.toString());
-        }
     }
 }

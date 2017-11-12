@@ -25,11 +25,13 @@
             </intent-filter>
 
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
                 <data
                     android:host="responsecallback"
                     android:scheme="assismedapp" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".CallActivity" />
     </application>
 </manifest>

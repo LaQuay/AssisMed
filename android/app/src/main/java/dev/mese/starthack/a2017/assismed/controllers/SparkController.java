@@ -24,12 +24,18 @@ import java.util.List;
 public class SparkController {
     public static final String TAG = SparkController.class.getSimpleName();
     public final static String ROOM_HEALTH_ASSIST_ROBOT = "f1836441-08bb-3cda-9daa-2e33cb061b89";
+    public static final String[] callArray = {"ester.lorente@est.fib.upc.edu", "dx80_lauzhack@ch.room.ciscospark.com"};
+    public static final int callIndex = 0;
+    public static final String[] postArray = {"ester.lorente@est.fib.upc.edu"};
+    private static final int postIndex = 0;
     private final static String clientId = "C480812ef8d0564ccf4d1c681978471e78b3c97ac127419ec3abcd38808969fba";
     private final static String clientSecret = "bbbc79b98186e5be3ccb67f7b5b06a830a90eb48bb29df6684d933e6523e6047";
     private final static String scope = "spark:all";
     private final static String redirectUri = "assismedapp://responsecallback";
     private static SparkController instance;
+
     private Spark sparkInstance;
+    private Call activeCall;
 
     private SparkController() {
     }
@@ -80,18 +86,18 @@ public class SparkController {
     }
 
     // VideoCall receiverEmail person with audio and video both ways enabled
-    // NOTE: Works on both ways in audio, and one-way video. As the app is currently beta it seems a 'not developed' function
+    // NOTE: Works when the receiver accepts the call
     public void call(String receiverEmail, final WseSurfaceView localView, final WseSurfaceView remoteView, final PhoneDoingCallCallback phoneReceivingCallCallback) {
         Log.e(TAG, "Calling: " + receiverEmail);
         if (sparkInstance != null) {
-            // Render the user (local) camera before the call starts
+            // Render the user (local) camera before the activeCall starts
             sparkInstance.phone().startPreview(localView);
             sparkInstance.phone().dial(receiverEmail, MediaOption.audioVideo(localView, remoteView), new CompletionHandler<Call>() {
                 @Override
                 public void onComplete(Result<Call> result) {
-                    Call call = result.getData();
-                    if (call != null) {
-                        call.setObserver(new CallObserver() {
+                    activeCall = result.getData();
+                    if (activeCall != null) {
+                        activeCall.setObserver(new CallObserver() {
                             @Override
                             public void onRinging(Call call) {
                                 Log.e(TAG, "onRinging");
@@ -124,8 +130,19 @@ public class SparkController {
         }
     }
 
+    public void hangupCall(final HangUpCallCallback onHangupCallCallback) {
+        if (activeCall != null) {
+            activeCall.hangup(new CompletionHandler<Void>() {
+                @Override
+                public void onComplete(Result<Void> result) {
+                    onHangupCallCallback.onHangUpCall();
+                }
+            });
+        }
+    }
+
     // Set a listener for incoming calls to this device
-    // NOTE: The listener works, because when the device receives a call, it shows the message. And
+    // NOTE: The listener works, because when the device receives a activeCall, it shows the message. And
     // just after that, the 'cisco-compiled' code stops working (Ticket sent to Spark4Dev)
     public void setListenerReceiveCall(final VideoView localView, final VideoView remoteView, final PhoneDoingCallCallback phoneReceivingCallCallback) {
         if (sparkInstance != null) {
@@ -204,7 +221,7 @@ public class SparkController {
     }
 
     public void newMessageReceived() {
-        
+
     }
 
     public interface PhoneRegisteredCallback {
@@ -217,5 +234,9 @@ public class SparkController {
 
     public interface VideoCodeActivationCallback {
         void onVideoCodecResponse(boolean isSuccessful);
+    }
+
+    public interface HangUpCallCallback {
+        void onHangUpCall();
     }
 }
