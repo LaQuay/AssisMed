@@ -8,20 +8,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.LinearLayout;
+import android.widget.VideoView;
 
 import com.ciscospark.androidsdk.CompletionHandler;
 import com.ciscospark.androidsdk.Result;
-import com.ciscospark.androidsdk.Spark;
+import com.ciscospark.androidsdk.SparkError;
 import com.ciscospark.androidsdk.auth.OAuthWebViewAuthenticator;
 
 import dev.mese.starthack.a2017.assismed.controllers.SparkController;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment
+        extends Fragment
+        implements SparkController.PhoneRegisteredCallback, SparkController.PhoneDoingCallCallback,
+            SparkController.VideoCodeActivationCallback
+{
     public static final String TAG = HomeFragment.class.getSimpleName();
+
+    private static final String[] callArray = {"ester.lorente@est.fib.upc.edu", "dx80_lauzhack@ch.room.ciscospark.com"};
+    private static final int callIndex = 0;
     private View rootview;
-    private LinearLayout container;
     private WebView webView;
+    private VideoView localView;
+    private VideoView remoteView;
+    private SparkController.PhoneRegisteredCallback phoneRegisteredCallback;
+    private SparkController.PhoneDoingCallCallback phoneDoingCallCallback;
+    private SparkController.VideoCodeActivationCallback videoCodeActivationCallback;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -35,33 +46,46 @@ public class HomeFragment extends Fragment {
         setUpElements();
         setUpListeners();
 
-        hideWebView(true);
+        phoneRegisteredCallback = this;
+        phoneDoingCallCallback = this;
+        videoCodeActivationCallback = this;
+
+        switchAuthMode(true);
         connectSparkOAuth();
 
         return rootview;
     }
 
-    private void hideWebView(boolean hide) {
-        if (hide) {
+    private void switchAuthMode(boolean hideAuthMode) {
+        if (hideAuthMode) {
             webView.setVisibility(View.GONE);
+            //localView.setVisibility(View.VISIBLE);
+            //remoteView.setVisibility(View.VISIBLE);
         } else {
             webView.setVisibility(View.VISIBLE);
+            //localView.setVisibility(View.GONE);
+            //remoteView.setVisibility(View.GONE);
         }
     }
 
     private void connectSparkOAuth() {
-        OAuthWebViewAuthenticator authenticator = SparkController.getInstance().getOAuthAuthenticator();
-        Spark spark = SparkController.getInstance().getSpark(getActivity().getApplication(), authenticator);
+        final OAuthWebViewAuthenticator authenticator = SparkController.getInstance().getOAuthAuthenticator();
         if (!authenticator.isAuthorized()) {
-            hideWebView(false);
+            switchAuthMode(false);
             authenticator.authorize(webView, new CompletionHandler<Void>() {
                 @Override
                 public void onComplete(Result<Void> result) {
                     if (!result.isSuccessful()) {
-                        Log.e(TAG, "User not authorized. " + result.toString());
+                        Log.e(TAG, "User not authorized: " + result.toString());
                     } else {
-                        Log.e(TAG, "User authorized." + result.toString());
-                        hideWebView(true);
+                        // Now we are authorized
+                        Log.e(TAG, "User authorized: " + result.toString());
+                        switchAuthMode(true);
+
+                        SparkController.getInstance().getSpark(getActivity().getApplication(), authenticator);
+
+                        // Register the phone to send and receive calls
+                        SparkController.getInstance().registerPhone(phoneRegisteredCallback);
                     }
                 }
             });
@@ -70,10 +94,44 @@ public class HomeFragment extends Fragment {
 
     private void setUpElements() {
         webView = (WebView) rootview.findViewById(R.id.webview);
-        container = (LinearLayout) rootview.findViewById(R.id.fragment_home_container);
+        localView = (VideoView) rootview.findViewById(R.id.fragment_home_local_view);
+        remoteView = (VideoView) rootview.findViewById(R.id.fragment_home_remote_view);
+
+        // Visibility GONE because of the limits of the API
+        localView.setVisibility(View.GONE);
+        remoteView.setVisibility(View.GONE);
     }
 
     private void setUpListeners() {
 
+    }
+
+    @Override
+    public void onPhoneRegistered(final boolean isSuccessful) {
+        Log.e(TAG, "Registration result: " + isSuccessful);
+
+        SparkController.getInstance().requestVideoCodecActivation(getContext(), videoCodeActivationCallback);
+    }
+
+    @Override
+    public void onVideoCodecResponse(boolean isSuccessful) {
+        Log.e(TAG, "onVideoCodecResponsec call: " + isSuccessful);
+
+        if (isSuccessful) {
+            // Set up Listener to receive a call
+            //SparkController.getInstance().setListenerReceiveCall(spark, localView, remoteView, phoneDoingCallCallback);
+
+            // Call someone
+            SparkController.getInstance().call(callArray[callIndex], localView, remoteView, phoneDoingCallCallback);
+        }
+    }
+
+    @Override
+    public void onDoingCall(boolean isSuccessful, SparkError error) {
+        Log.e(TAG, "Inside call: " + isSuccessful);
+
+        if (error != null) {
+            Log.e(TAG, "Inside call error: " + error.toString());
+        }
     }
 }
