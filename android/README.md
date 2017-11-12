@@ -6,8 +6,8 @@
 - Call: Send calls (video enabled).
 - Hangup call: Hangup a call.
 - Listener for receiving calls: Set up a listener in order to receive a call (video enabled).
-- Post a Message to an specífic room or a person.
-- Read all Messages of a room.
+- Post Message: Post a Message to an specífic room or a person.
+- Read Messages: Read all Messages of a room.
 
 ## How to run on your machine
 
