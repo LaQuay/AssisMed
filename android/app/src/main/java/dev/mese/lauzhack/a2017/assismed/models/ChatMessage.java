@@ -1,4 +1,4 @@
-package dev.mese.lauzhack.a2017.assismed;
+package dev.mese.lauzhack.a2017.assismed.models;
 
 import java.util.Random;
 

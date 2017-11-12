@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import dev.mese.lauzhack.a2017.assismed.models.ChatMessage;
+
 public class ChatAdapter extends BaseAdapter {
 
     private static LayoutInflater inflater = null;

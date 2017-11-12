@@ -13,16 +13,18 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Random;
 
+import dev.mese.lauzhack.a2017.assismed.models.ChatMessage;
+import dev.mese.lauzhack.a2017.assismed.utils.Utility;
+
 public class ChatFragment extends Fragment {
     public static final String TAG = ChatFragment.class.getSimpleName();
-
+    public static ArrayList<ChatMessage> chatlist;
+    public static ChatAdapter chatAdapter;
+    ListView msgListView;
     private View rootview;
     private EditText msg_edittext;
     private String user1 = "khushi", user2 = "khushi1";
     private Random random;
-    public static ArrayList<ChatMessage> chatlist;
-    public static ChatAdapter chatAdapter;
-    ListView msgListView;
 
     public static ChatFragment newInstance() {
         return new ChatFragment();
@@ -31,7 +33,7 @@ public class ChatFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        rootview = inflater.inflate(R.layout.chat_layout, container, false);
+        rootview = inflater.inflate(R.layout.fragment_chat, container, false);
 
         random = new Random();
         msg_edittext = (EditText) rootview.findViewById(R.id.messageEditText);
@@ -70,8 +72,8 @@ public class ChatFragment extends Fragment {
                     message, "" + random.nextInt(1000), true);
             chatMessage.setMsgID();
             chatMessage.body = message;
-            chatMessage.Date = CommonMethods.getCurrentDate();
-            chatMessage.Time = CommonMethods.getCurrentTime();
+            chatMessage.Date = Utility.getCurrentDate();
+            chatMessage.Time = Utility.getCurrentTime();
             msg_edittext.setText("");
             chatAdapter.add(chatMessage);
             chatAdapter.notifyDataSetChanged();
