@@ -32,6 +32,7 @@ public class SparkController {
     private static SparkController instance;
 
     private Spark sparkInstance;
+    private OAuthWebViewAuthenticator oAuthWebViewAuthenticator;
     private Call activeCall;
 
     private SparkController() {
@@ -53,7 +54,10 @@ public class SparkController {
     // Authenticates the Android app in the SparkApp, through OAuth2
     public OAuthWebViewAuthenticator getOAuthAuthenticator() {
         //FIX Bug in SDK, redirectUri and scope are switched
-        return new OAuthWebViewAuthenticator(clientId, clientSecret, redirectUri, scope);
+        if (oAuthWebViewAuthenticator == null) {
+            oAuthWebViewAuthenticator = new OAuthWebViewAuthenticator(clientId, clientSecret, redirectUri, scope);
+        }
+        return oAuthWebViewAuthenticator;
     }
 
     // Get the Spark element

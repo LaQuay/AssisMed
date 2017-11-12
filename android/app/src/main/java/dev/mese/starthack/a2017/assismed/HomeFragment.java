@@ -29,9 +29,6 @@ public class HomeFragment extends Fragment implements SparkController.PhoneRegis
 
     private View rootview;
     private WebView webView;
-    private SparkController.PhoneRegisteredCallback phoneRegisteredCallback;
-    private SparkController.PhoneDoingCallCallback phoneDoingCallCallback;
-    private SparkController.HangUpCallCallback onHangupCallCallback;
 
     private LinearLayout optionsCallLayout;
     private LinearLayout insideCallLayout;
@@ -39,6 +36,10 @@ public class HomeFragment extends Fragment implements SparkController.PhoneRegis
     private TextView hangTextView;
     private WseSurfaceView localView;
     private WseSurfaceView remoteView;
+
+    private SparkController.PhoneRegisteredCallback phoneRegisteredCallback;
+    private SparkController.PhoneDoingCallCallback phoneDoingCallCallback;
+    private SparkController.HangUpCallCallback onHangupCallCallback;
 
     private FlowState currentFlowState;
 
@@ -58,6 +59,7 @@ public class HomeFragment extends Fragment implements SparkController.PhoneRegis
 
         currentFlowState = FlowState.LOGIN;
         changeFlowState(currentFlowState);
+
         connectSparkOAuth();
 
         return rootview;
@@ -88,6 +90,7 @@ public class HomeFragment extends Fragment implements SparkController.PhoneRegis
     private void connectSparkOAuth() {
         final OAuthWebViewAuthenticator authenticator = SparkController.getInstance().getOAuthAuthenticator();
         if (!authenticator.isAuthorized()) {
+            changeFlowState(FlowState.LOGIN);
             authenticator.authorize(webView, new CompletionHandler<Void>() {
                 @Override
                 public void onComplete(Result<Void> result) {
@@ -105,6 +108,8 @@ public class HomeFragment extends Fragment implements SparkController.PhoneRegis
                     }
                 }
             });
+        } else {
+            changeFlowState(FlowState.WAITING);
         }
     }
 
