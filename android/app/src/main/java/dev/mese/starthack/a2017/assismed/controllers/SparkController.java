@@ -179,7 +179,7 @@ public class SparkController {
         }
     }
 
-    public void listMessages(String toRoomID) {
+    public void listMessages(String toRoomID, final ListMessagesResultCallback callback) {
         if (sparkInstance != null) {
             sparkInstance.messages().list(toRoomID, null, null, null, 50, new CompletionHandler<List<Message>>() {
                 @Override
@@ -187,9 +187,7 @@ public class SparkController {
                     if (results.isSuccessful()) {
                         List<Message> messagesList = results.getData();
                         if (messagesList != null) {
-                            for (int i = 0; i < messagesList.size(); ++i) {
-                                Log.e(TAG, "onResultSuccessful(" + i + "): " + messagesList.get(i));
-                            }
+                            callback.onListMessagesResultReceived(messagesList);
                         }
                     } else {
                         SparkError error = results.getError();
@@ -214,5 +212,9 @@ public class SparkController {
 
     public interface HangUpCallCallback {
         void onHangUpCall();
+    }
+
+    public interface ListMessagesResultCallback {
+        void onListMessagesResultReceived(List<Message> messages);
     }
 }
