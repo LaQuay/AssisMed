@@ -32,6 +32,5 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".CallActivity" />
     </application>
 </manifest>

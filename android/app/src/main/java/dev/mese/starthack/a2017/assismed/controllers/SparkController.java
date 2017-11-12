@@ -1,10 +1,7 @@
 package dev.mese.starthack.a2017.assismed.controllers;
 
-import android.app.AlertDialog;
 import android.app.Application;
-import android.content.Context;
 import android.util.Log;
-import android.widget.VideoView;
 
 import com.ciscospark.androidsdk.CompletionHandler;
 import com.ciscospark.androidsdk.Result;
@@ -142,9 +139,7 @@ public class SparkController {
     }
 
     // Set a listener for incoming calls to this device
-    // NOTE: The listener works, because when the device receives a activeCall, it shows the message. And
-    // just after that, the 'cisco-compiled' code stops working (Ticket sent to Spark4Dev)
-    public void setListenerReceiveCall(final VideoView localView, final VideoView remoteView, final PhoneDoingCallCallback phoneReceivingCallCallback) {
+    public void setListenerReceiveCall(final WseSurfaceView localView, final WseSurfaceView remoteView, final PhoneDoingCallCallback phoneReceivingCallCallback) {
         if (sparkInstance != null) {
             sparkInstance.phone().setIncomingCallListener(new Phone.IncomingCallListener() {
                 @Override
@@ -162,21 +157,6 @@ public class SparkController {
                             }
                         }
                     });
-                }
-            });
-        }
-    }
-
-    // Pop up an alert for the user to aprove the use of the H264 video codec
-    public void requestVideoCodecActivation(Context context, final VideoCodeActivationCallback videoCodeActivationCallback) {
-        if (sparkInstance != null) {
-            sparkInstance.phone().requestVideoCodecActivation(new AlertDialog.Builder(context), new CompletionHandler<Boolean>() {
-                @Override
-                public void onComplete(Result<Boolean> result) {
-                    // result == true does not mean user acceptance
-                    Log.e(TAG, "requestVideoCodecActivation: " + result.getData());
-
-                    videoCodeActivationCallback.onVideoCodecResponse(result.getData());
                 }
             });
         }
@@ -230,10 +210,6 @@ public class SparkController {
 
     public interface PhoneDoingCallCallback {
         void onDoingCall(boolean isSuccessful, SparkError error);
-    }
-
-    public interface VideoCodeActivationCallback {
-        void onVideoCodecResponse(boolean isSuccessful);
     }
 
     public interface HangUpCallCallback {
