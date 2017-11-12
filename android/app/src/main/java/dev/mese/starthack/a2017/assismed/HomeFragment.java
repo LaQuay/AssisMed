@@ -8,12 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.VideoView;
 
 import com.ciscospark.androidsdk.CompletionHandler;
 import com.ciscospark.androidsdk.Result;
 import com.ciscospark.androidsdk.SparkError;
 import com.ciscospark.androidsdk.auth.OAuthWebViewAuthenticator;
+import com.webex.wseclient.WseSurfaceView;
 
 import dev.mese.starthack.a2017.assismed.controllers.SparkController;
 
@@ -29,8 +29,8 @@ public class HomeFragment
     private static final int postIndex = 0;
     private View rootview;
     private WebView webView;
-    private VideoView localView;
-    private VideoView remoteView;
+    private WseSurfaceView localView;
+    private WseSurfaceView remoteView;
     private SparkController.PhoneRegisteredCallback phoneRegisteredCallback;
     private SparkController.PhoneDoingCallCallback phoneDoingCallCallback;
     private SparkController.VideoCodeActivationCallback videoCodeActivationCallback;
@@ -60,12 +60,12 @@ public class HomeFragment
     private void switchAuthMode(boolean hideAuthMode) {
         if (hideAuthMode) {
             webView.setVisibility(View.GONE);
-            //localView.setVisibility(View.VISIBLE);
-            //remoteView.setVisibility(View.VISIBLE);
+            localView.setVisibility(View.VISIBLE);
+            remoteView.setVisibility(View.VISIBLE);
         } else {
             webView.setVisibility(View.VISIBLE);
-            //localView.setVisibility(View.GONE);
-            //remoteView.setVisibility(View.GONE);
+            localView.setVisibility(View.GONE);
+            remoteView.setVisibility(View.GONE);
         }
     }
 
@@ -95,12 +95,8 @@ public class HomeFragment
 
     private void setUpElements() {
         webView = (WebView) rootview.findViewById(R.id.webview);
-        localView = (VideoView) rootview.findViewById(R.id.fragment_home_local_view);
-        remoteView = (VideoView) rootview.findViewById(R.id.fragment_home_remote_view);
-
-        // Visibility GONE because of the limits of the API
-        localView.setVisibility(View.GONE);
-        remoteView.setVisibility(View.GONE);
+        localView = (WseSurfaceView) rootview.findViewById(R.id.fragment_home_local_view);
+        remoteView = (WseSurfaceView) rootview.findViewById(R.id.fragment_home_remote_view);
     }
 
     private void setUpListeners() {
@@ -111,11 +107,11 @@ public class HomeFragment
     public void onPhoneRegistered(final boolean isSuccessful) {
         Log.e(TAG, "Registration result: " + isSuccessful);
 
-        //SparkController.getInstance().requestVideoCodecActivation(getContext(), videoCodeActivationCallback);
+        SparkController.getInstance().requestVideoCodecActivation(getContext(), videoCodeActivationCallback);
         //SparkController.getInstance().postMessage(postArray[postIndex], "OLA K ASE");
         //SparkController.getInstance().postMessage(postArray[postIndex], "medicalevent");
         //SparkController.getInstance().postMessage(postArray[postIndex], "new radiografia for ester.loga@gmail.com on 13/11/2017 at 1:32");
-        SparkController.getInstance().listMessages(SparkController.ROOM_HEALTH_ASSIST_ROBOT);
+        //SparkController.getInstance().listMessages(SparkController.ROOM_HEALTH_ASSIST_ROBOT);
     }
 
     @Override

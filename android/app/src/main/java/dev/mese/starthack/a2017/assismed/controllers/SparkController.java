@@ -17,19 +17,18 @@ import com.ciscospark.androidsdk.phone.Call;
 import com.ciscospark.androidsdk.phone.CallObserver;
 import com.ciscospark.androidsdk.phone.MediaOption;
 import com.ciscospark.androidsdk.phone.Phone;
+import com.webex.wseclient.WseSurfaceView;
 
 import java.util.List;
 
 public class SparkController {
     public static final String TAG = SparkController.class.getSimpleName();
-    private static SparkController instance;
+    public final static String ROOM_HEALTH_ASSIST_ROBOT = "f1836441-08bb-3cda-9daa-2e33cb061b89";
     private final static String clientId = "C480812ef8d0564ccf4d1c681978471e78b3c97ac127419ec3abcd38808969fba";
     private final static String clientSecret = "bbbc79b98186e5be3ccb67f7b5b06a830a90eb48bb29df6684d933e6523e6047";
     private final static String scope = "spark:all";
     private final static String redirectUri = "assismedapp://responsecallback";
-
-    public final static String ROOM_HEALTH_ASSIST_ROBOT = "f1836441-08bb-3cda-9daa-2e33cb061b89";
-
+    private static SparkController instance;
     private Spark sparkInstance;
 
     private SparkController() {
@@ -82,7 +81,7 @@ public class SparkController {
 
     // VideoCall receiverEmail person with audio and video both ways enabled
     // NOTE: Works on both ways in audio, and one-way video. As the app is currently beta it seems a 'not developed' function
-    public void call(String receiverEmail, final VideoView localView, final VideoView remoteView, final PhoneDoingCallCallback phoneReceivingCallCallback) {
+    public void call(String receiverEmail, final WseSurfaceView localView, final WseSurfaceView remoteView, final PhoneDoingCallCallback phoneReceivingCallCallback) {
         Log.e(TAG, "Calling: " + receiverEmail);
         if (sparkInstance != null) {
             // Render the user (local) camera before the call starts
@@ -202,6 +201,10 @@ public class SparkController {
                 }
             });
         }
+    }
+
+    public void newMessageReceived() {
+        
     }
 
     public interface PhoneRegisteredCallback {
