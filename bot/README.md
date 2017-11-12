@@ -1,54 +1,11 @@
-# Botkit Template for Cisco Spark
-
-This template regroups a set of best practices to bootstrap a Botkit project connecting to Cisco Spark.
-
-**take a look at the [redis](https://github.com/CiscoDevNet/botkit-template/tree/redis) and [pluggable architecture](https://github.com/CiscoDevNet/botkit-template/tree/plugin) branches for more advanced templates**
-
-**check [Howdy's Botkit StarterKit](https://github.com/howdyai/botkit-starter-ciscospark) if you're planning to use [Botkit Studio](https://studio.botkit.ai/app)**
-
-
+# Botkit Health Assistance for Cisco Spark
 ## Features
 
-- configuration: pass settings either through environment variables on the command line, or hard-coded values in the `.env` file. Note that command line variables are priorized over the `.env` file if present in both places.
-
-- skills: organize your bot behaviours by placing 'commands', 'conversations' and 'events' in the [skills directory](skills/README.md).
-
-- user experience: the template comes ready-to-use skills: a 'welcome' invite, as well as 'help' and 'fallback' commands.
-
-- healthcheck: easilly check that everything goes well by hitting the `ping` endpoint automatically exposed.
-
-- metadata: expose extra info via command and on a public address so that Spark users can inquire on Bot Author / Legal mentions / Healthcheck endpoint...
-
-- mentions: the appendMention utility function helps Spark users remind to mention the bot in Group spaces.
-
-- popular cloud providers: the bot self-configures when run on Glitch and Heroku (if )
-
-
-## Quick start on Glitch
-
-Click [![Remix on Glitch](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg)](https://glitch.com/edit/#!/import/github/CiscoDevNet/botkit-template)
-
-Then open the `.env` file and paste your bot's token into the SPARK_TOKEN variable.
-
-You bot is all set, responding in 1-1 and 'group' spaces, and sending a welcome message when added to a space,
-Its healthcheck is accessible at your application public url, suffixed with "/ping" 
-
-_Note that thanks to Glitch 'PROJECT_DOMAIN' env variable, you did not need to add a PUBLIC_URL variable pointing to your app domain._
-
-
-## Quick start on Heroku
-
-Create a new project pointing to this repo.
-
-Reach to your app settings, reveal your config variables, and add a SPARK_TOKEN variable with your bot token as value.
-
-Unless your app is using [Dyno Metadata](https://devcenter.heroku.com/articles/dyno-metadata), you also need to add a PUBLIC_URL variable pointing to your app domain.
-
-![](docs/heroku_config-variables.png)
-
-You bot is all set, responding in 1-1 and 'group' spaces, and sending a welcome message when added to a space,
-Its healthcheck is accessible at your application public url, suffixed with "/ping" 
-
+- medicalevent: Creates a medical event for the user, date and time specifieds.
+- visits: Lists all the medical events of an specified user.
+- help: Prompts the placing the 'commands'.
+- prescribe: Prescribes a user an specific medication to be reminded a time lapse.
+- prescriptions: Lists all the medical prescriptions of an specified user.
 
 ## How to run on your local machine (with ngrok)
 
