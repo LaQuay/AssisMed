@@ -1,4 +1,4 @@
-package dev.mese.starthack.a2017.assismed;
+package dev.mese.lauzhack.a2017.assismed;
 
 import android.app.Activity;
 import android.content.Context;

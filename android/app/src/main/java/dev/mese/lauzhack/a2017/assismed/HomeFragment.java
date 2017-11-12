@@ -1,4 +1,4 @@
-package dev.mese.starthack.a2017.assismed;
+package dev.mese.lauzhack.a2017.assismed;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,10 +18,10 @@ import com.ciscospark.androidsdk.SparkError;
 import com.ciscospark.androidsdk.auth.OAuthWebViewAuthenticator;
 import com.webex.wseclient.WseSurfaceView;
 
-import dev.mese.starthack.a2017.assismed.controllers.SparkController;
+import dev.mese.lauzhack.a2017.assismed.controllers.SparkController;
 
-import static dev.mese.starthack.a2017.assismed.controllers.SparkController.callArray;
-import static dev.mese.starthack.a2017.assismed.controllers.SparkController.callIndex;
+import static dev.mese.lauzhack.a2017.assismed.controllers.SparkController.callArray;
+import static dev.mese.lauzhack.a2017.assismed.controllers.SparkController.callIndex;
 
 public class HomeFragment extends Fragment implements SparkController.PhoneRegisteredCallback,
         SparkController.PhoneDoingCallCallback, SparkController.HangUpCallCallback {

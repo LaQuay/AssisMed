@@ -1,4 +1,4 @@
-package dev.mese.starthack.a2017.assismed.controllers;
+package dev.mese.lauzhack.a2017.assismed.controllers;
 
 import android.app.Application;
 import android.util.Log;
