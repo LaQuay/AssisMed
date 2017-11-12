@@ -24,7 +24,9 @@ public class ChatFragment extends Fragment implements SparkController.ListMessag
 
     public static final String TAG = ChatFragment.class.getSimpleName();
     private static final String ROOM_ID_ARRAY[] = {"f1836441-08bb-3cda-9daa-2e33cb061b89"};
-    private static final int index = 0;
+    private static final int indexRoom = 0;
+    private static final String SENDER_EMAIL[] = {"maarcbcn@gmail.com"};
+    private static final int indexSender = 0;
     public static ArrayList<ChatMessage> chatlist;
     public static ChatAdapter chatAdapter;
     private View rootview;
@@ -84,19 +86,21 @@ public class ChatFragment extends Fragment implements SparkController.ListMessag
             msg_edittext.setText("");
             chatAdapter.add(chatMessage);
             chatAdapter.notifyDataSetChanged();
+
+            SparkController.getInstance().postMessage(ROOM_ID_ARRAY[indexRoom], null, message);
         }
     }
 
     public void getTextMessages(View v) {
-        SparkController.getInstance().listMessages(ROOM_ID_ARRAY[index], listMessagesResultCallback);
+        SparkController.getInstance().listMessages(ROOM_ID_ARRAY[indexRoom], listMessagesResultCallback);
     }
 
     @Override
     public void onListMessagesResultReceived(List<Message> messages) {
         for (int i = 0; i < messages.size(); ++i) {
-            String message = messages.get(i).getMarkdown();
-            if (!message.equalsIgnoreCase("")) {
-                boolean isMine = messages.get(i).getPersonEmail() == "ester.loga@gmail.com";
+            String message = messages.get(i).getText();
+            if (message != null && !message.equalsIgnoreCase("")) {
+                boolean isMine = SENDER_EMAIL[indexSender].equals(messages.get(i).getPersonEmail());
                 final ChatMessage chatMessage = new ChatMessage(user1, user2,
                         message, "" + random.nextInt(1000), isMine);
                 chatMessage.setMsgID();

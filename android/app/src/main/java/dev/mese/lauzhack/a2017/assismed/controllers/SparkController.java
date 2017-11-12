@@ -131,6 +131,7 @@ public class SparkController {
         }
     }
 
+    // Hangup the call if is still active
     public void hangupCall(final HangUpCallCallback onHangupCallCallback) {
         if (activeCall != null) {
             activeCall.hangup(new CompletionHandler<Void>() {
@@ -166,9 +167,10 @@ public class SparkController {
         }
     }
 
-    public void postMessage(String toPersonEmail, String messageToSend) {
+    // Send a Message to a room or to a personEmail, and the message to send
+    public void postMessage(String roomID, String toPersonEmail, String messageToSend) {
         if (sparkInstance != null) {
-            sparkInstance.messages().post(null, null, toPersonEmail, messageToSend, null, null, new CompletionHandler<Message>() {
+            sparkInstance.messages().post(roomID, null, toPersonEmail, messageToSend, null, null, new CompletionHandler<Message>() {
                 @Override
                 public void onComplete(Result<Message> result) {
                     if (result.isSuccessful()) {
@@ -183,6 +185,7 @@ public class SparkController {
         }
     }
 
+    // List all messages of a room
     public void listMessages(String toRoomID, final ListMessagesResultCallback callback) {
         if (sparkInstance != null) {
             sparkInstance.messages().list(toRoomID, null, null, null, 50, new CompletionHandler<List<Message>>() {
@@ -200,10 +203,6 @@ public class SparkController {
                 }
             });
         }
-    }
-
-    public void newMessageReceived() {
-
     }
 
     public interface PhoneRegisteredCallback {
