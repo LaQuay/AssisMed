@@ -10,13 +10,18 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import com.ciscospark.androidsdk.message.Message;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import dev.mese.lauzhack.a2017.assismed.controllers.SparkController;
 import dev.mese.lauzhack.a2017.assismed.models.ChatMessage;
 import dev.mese.lauzhack.a2017.assismed.utils.Utility;
 
-public class ChatFragment extends Fragment {
+public class ChatFragment extends Fragment implements SparkController.ListMessagesResultCallback {
+
     public static final String TAG = ChatFragment.class.getSimpleName();
     public static ArrayList<ChatMessage> chatlist;
     public static ChatAdapter chatAdapter;
@@ -25,6 +30,8 @@ public class ChatFragment extends Fragment {
     private EditText msg_edittext;
     private String user1 = "khushi", user2 = "khushi1";
     private Random random;
+
+    private SparkController.ListMessagesResultCallback listMessagesResultCallback;
 
     public static ChatFragment newInstance() {
         return new ChatFragment();
@@ -57,6 +64,9 @@ public class ChatFragment extends Fragment {
         chatAdapter = new ChatAdapter(getActivity(), chatlist);
         msgListView.setAdapter(chatAdapter);
 
+        listMessagesResultCallback = this;
+        getTextMessages(rootview);
+
         return rootview;
     }
 
@@ -72,6 +82,30 @@ public class ChatFragment extends Fragment {
             msg_edittext.setText("");
             chatAdapter.add(chatMessage);
             chatAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public void getTextMessages(View v) {
+        String roomID = "Y2lzY29zcGFyazovL3VzL1JPT00vMjJhNWFjZjUtNTM5OS0zNWQ4LWJmOTUtNTNmNDdjYTVjMDE1";
+        SparkController.getInstance().listMessages(roomID, listMessagesResultCallback);
+    }
+
+    @Override
+    public void onListMessagesResultReceived(List<Message> messages) {
+        for (int i = 0; i < messages.size(); ++i) {
+            String message = messages.get(i).getMarkdown();
+            if (!message.equalsIgnoreCase("")) {
+                boolean isMine = messages.get(i).getPersonEmail() == "ester.loga@gmail.com";
+                final ChatMessage chatMessage = new ChatMessage(user1, user2,
+                        message, "" + random.nextInt(1000), isMine);
+                chatMessage.setMsgID();
+                chatMessage.body = message;
+                chatMessage.Date = CommonxMethods.getCurrentDate();
+                chatMessage.Time = CommonMethods.getCurrentTime();
+                msg_edittext.setText("");
+                chatAdapter.add(chatMessage);
+                chatAdapter.notifyDataSetChanged();
+            }
         }
     }
 }
