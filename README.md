@@ -14,6 +14,10 @@ These are some of the reasons from where **AssistMed** comes from. The idea that
 AssistMed has two different approaches.
 
 - It creates a bot for Cisco Spark Chat that adds 4 health-related features. Using it, doctors can prescribe medication to its patients and automatically set reminders through the chat. Moreover, doctors/secretaries can organise visits and medical events for organize patients agenda and also automatically remind them when the event is near. This for options are easy usable for non technical users because they resemble natural language.
+  - `medicalevent`: Asks you to create a new event in patients agenda using the following format `new <event> for <email> on <date> at <time>`.
+  - `visits of <email>`: List all the events in user's agenda.
+  - `prescribe <what> to <email> every <amount_of_hours> hours until <date>`: Prescibe a medication to the user and automatically sets a reminder to the user.
+  - `prescriptions of <email>`: List all the prescriptions in the user reminders.
 
 - A user-friendly android mobile application that integrates with Cisco Spark Chat by providing a chat and a videoconference between patient and his/her doctor.
 
