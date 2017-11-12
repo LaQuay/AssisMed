@@ -7,19 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class NotificationsFragment extends Fragment {
+public class AboutFragment extends Fragment {
 
-    public static final String TAG = NotificationsFragment.class.getSimpleName();
+    public static final String TAG = AboutFragment.class.getSimpleName();
     private View rootview;
 
-    public static NotificationsFragment newInstance() {
-        return new NotificationsFragment();
+    public static AboutFragment newInstance() {
+        return new AboutFragment();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        rootview = inflater.inflate(R.layout.fragment_notification, container, false);
+        rootview = inflater.inflate(R.layout.fragment_about, container, false);
 
         return rootview;
     }

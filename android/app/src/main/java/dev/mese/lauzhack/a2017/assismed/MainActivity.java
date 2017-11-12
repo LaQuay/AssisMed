@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
                     ft.replace(android.R.id.content, fragment, "");
                     ft.commit();
                     return true;
-                case R.id.navigation_notifications:
-                    fragment = NotificationsFragment.newInstance();
+                case R.id.navigation_about:
+                    fragment = AboutFragment.newInstance();
                     ft.replace(android.R.id.content, fragment, "");
                     ft.commit();
                     return true;
