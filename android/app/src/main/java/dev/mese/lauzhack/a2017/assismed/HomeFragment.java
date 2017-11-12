@@ -90,7 +90,6 @@ public class HomeFragment extends Fragment implements SparkController.PhoneRegis
     private void connectSparkOAuth() {
         final OAuthWebViewAuthenticator authenticator = SparkController.getInstance().getOAuthAuthenticator();
         if (!authenticator.isAuthorized()) {
-            changeFlowState(FlowState.LOGIN);
             authenticator.authorize(webView, new CompletionHandler<Void>() {
                 @Override
                 public void onComplete(Result<Void> result) {
@@ -173,7 +172,7 @@ public class HomeFragment extends Fragment implements SparkController.PhoneRegis
         changeFlowState(FlowState.WAITING);
     }
 
-    public enum FlowState {
+    private enum FlowState {
         LOGIN,
         WAITING,
         CALLING

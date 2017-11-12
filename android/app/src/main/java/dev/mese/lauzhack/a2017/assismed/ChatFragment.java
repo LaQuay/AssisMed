@@ -20,8 +20,8 @@ public class ChatFragment extends Fragment {
     public static final String TAG = ChatFragment.class.getSimpleName();
     public static ArrayList<ChatMessage> chatlist;
     public static ChatAdapter chatAdapter;
-    ListView msgListView;
     private View rootview;
+    private ListView msgListView;
     private EditText msg_edittext;
     private String user1 = "khushi", user2 = "khushi1";
     private Random random;
@@ -45,7 +45,6 @@ public class ChatFragment extends Fragment {
                 switch (v.getId()) {
                     case R.id.sendMessageButton:
                         sendTextMessage(v);
-
                 }
             }
         });
@@ -59,10 +58,6 @@ public class ChatFragment extends Fragment {
         msgListView.setAdapter(chatAdapter);
 
         return rootview;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
     }
 
     public void sendTextMessage(View v) {
