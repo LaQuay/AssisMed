@@ -9,16 +9,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.util.List;
 
@@ -31,15 +27,18 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            Fragment fragment;
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                    Fragment fragment = HomeFragment.newInstance();
+                    fragment = HomeFragment.newInstance();
                     ft.replace(android.R.id.content, fragment, "");
                     ft.commit();
                     return true;
-                case R.id.navigation_dashboard:
-
+                case R.id.navigation_chat:
+                    fragment = ChatFragment.newInstance();
+                    ft.replace(android.R.id.content, fragment, "");
+                    ft.commit();
                     return true;
                 case R.id.navigation_notifications:
 
